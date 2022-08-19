@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+	  body {
+	    background-color: rgb(32, 32, 32);
+		color: rgb(255, 255, 255);
+		font-family: Arial;
+		user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        -webkit-touch-callout: none;
+        -o-user-select: none;
+        -moz-user-select: none;
+	  }
+	  text {
+	    font-size: 16px;
+	  }
+	  .link {
+	    color: rgb(0, 255, 0);
+	  }
+	  .link:hover {
+	    color: rgb(255, 255, 0);
+		cursor: pointer;
+	  }
+	  .header {
+	    top: 0px;
+		left: 264px;
+		position: fixed;
+		width: calc(100% - 264px);
+		height: 32px;
+		background-color: rgb(40, 40, 40);
+	  }
+	  .headerlink {
+		top: 50%;
+		right: 10px;
+		position: absolute;
+		transform: translate(0, -50%);
+	  }
+	  .navigation {
+	    top: 0px;
+		left: 0px;
+		position: fixed;
+		width: 256px;
+		height: 100%;
+		background-color: rgb(48, 48, 48);
+		padding: 4px
+	  }
+	  .title {
+	    font-size: 24px;
+		font-weight: bold;
+		top: 50%;
+		left: 4px;
+		position: absolute;
+		transform: translate(0, -50%);
+	  }
+	  .main {
+	    font-size: 18px;
+	  }
+	  .sub {
+		margin-left: 32px;
+	  }
+	  .content {
+	    top: 32px;
+		left: 264px;
+		position: absolute;
+		width: calc(100% - 272px);
+		height: calc(100% - 40px);
+		padding: 4px;
+	  }
+	  .number {
+		color: #FF00FF;
+	  }
+	  .string {
+		color: #00FFFF;
+	  }
+	  .keyword {
+		color: #FF7F00;
+	  }
+	  .function {
+		color: #FF0000;
+	  }
+	  .vartype {
+		color: #7F7FFF;
+	  }
+	  .singleline {
+	    display: inline;
+	  }
+	  code {
+	    display: block;
+		margin-top: 4px;
+		margin-bottom: 4px;
+	    background-color: rgb(64, 64, 64);
+		border-radius: 5px;
+		padding: 4px;
+		user-select: text;
+        -webkit-user-select: text;
+        -ms-user-select: text;
+        -webkit-touch-callout: text;
+        -o-user-select: text;
+        -moz-user-select: text;
+	  }
+	</style>
+    <script>
+	  function switchTo(main, sub, name) {
+	    document.getElementById("title").innerHTML = "RIOA Documentation - " + name
+		var children = document.getElementById("content").children
+	    for (var i = 0; i < children.length; i++) {
+		  children[i].style.display = "none"
+		}
+		var pages = document.getElementsByClassName("page")
+		for (var i = 0; i < pages.length; i++) {
+		  if (sub == 0 && pages[i].getAttribute("main") == main) pages[i].style.display = "block"
+		  if (pages[i].getAttribute("sub") == sub && pages[i].getAttribute("main") == main) pages[i].style.display = "block"
+		}
+	  }
+    </script>
+  </head>
+  <body onload="switchTo(1, 0, 'Introduction')">
+	<div class="content" id="content">
+	  <div class="page" main="1" sub="0" style="display: block">
+	    <text>RIOA is a functional interpreted programming language created for Truttle1's practical language jam. It's an acronym for (R)un (I)f (O)r (A)nd, which is the main feature of this language. To get started, download the interpreter from releases page on the GitHub reposity. The interpreter requires JRE 8 to be installed on your computer. More detailed instructions on how to use the interpreter can be found in the </text><text class="link" onclick="switchTo(4, 0, 'Interpreter')">interpreter</text><text> page of this documentation.</text>
+	  </div>
+	  <div class="page" main="2" sub="1" style="display: none">
+	    <text>Defining variables is simple. This is how you define a variable</text>
+        <code>
+          variable = <syntax class="number">0</syntax>
+        </code>
+	    <text>Variables are not just numbers. There are also strings, booleans and arrays.</text>
+        <code>
+          string = <syntax class="string">"this is a string"</syntax><br>
+          boolean = <syntax class="keyword">true</syntax><br>
+          array = [<syntax class="string">"string"</syntax>, <syntax class="number">0.5</syntax>, boolean, <syntax class="keyword">false</syntax>]
+        </code>
+		<text>There are also operator assignments:</text>
+		<code>
+		  x = <syntax class="number">5</syntax><br>
+		  x += <syntax class="number">2</syntax><br>
+		</code>
+		<text>Which is an equivalent to:</text>
+		<code>
+		  x = <syntax class="number">5</syntax><br>
+		  x = x + <syntax class="number">2</syntax><br>
+		</code>
+		<text>If you want to increment/decrement a number by just 1, you can do</text>
+		<code>
+		  x++
+		  x--
+		</code>
+	  </div>
+	  <div class="page" main="2" sub="2" style="display: none">
+	    <text>If you want to get a specific element in an array or specific character in a string, you can use the array accessor</text>
+		<code>
+		  array = [<syntax class="number">1</syntax>, <syntax class="number">2</syntax>, <syntax class="number">3</syntax>]<br>
+		  firstElement = array[<syntax class="number">0</syntax>]<br>
+		  <br>
+		  string = <syntax class="string">"123"</syntax><br>
+		  firstCharacter = string[<syntax class="number">0</syntax>]<br>
+		</code>
+		<text>You can also get length of the string or array by not specifying any value at all in the array accessor</text>
+		<code>
+		  length = array[]
+		</code>
+	  </div>
+	  <div class="page" main="2" sub="3" style="display: none">
+	    <text>There are several different operators. All of these can be used in an assignment. Those include:</text><br>
+	    <code class="singleline">+</code> <text>Adds two numbers together or if any of the values are strings, the values get concated into the string</text><br>
+	    <code class="singleline">-</code> <text>Subtracts two numbers together</text><br>
+	    <code class="singleline">*</code> <text>Multiplies two numbers together</text><br>
+	    <code class="singleline">/</code> <text>Divides two numbers together</text><br>
+	    <code class="singleline">%</code> <text>Modules two numbers together</text><br>
+	    <code class="singleline">**</code> <text>Powers two numbers together</text><br>
+	    <code class="singleline">&gt;&gt;</code> <text>Bitshift to right</text><br>
+	    <code class="singleline">&lt;&lt;</code> <text>Bitshift to left</text><br>
+	    <code class="singleline">&</code> <text>Bitwise AND</text><br>
+	    <code class="singleline">|</code> <text>Bitwise OR</text><br>
+	    <code class="singleline">^</code> <text>Bitwise XOR</text><br>
+	    <code class="singleline">&&</code> <text>Conditional AND</text><br>
+	    <code class="singleline">||</code> <text>Conditional OR</text><br>
+	    <code class="singleline">^^</code> <text>Conditional XOR</text><br>
+	    <code class="singleline">==</code> <text>Conditional equals</text><br>
+	    <code class="singleline">!=</code> <text>Conditional not equals</text><br>
+	    <code class="singleline">&lt;</code> <text>Less than</text><br>
+	    <code class="singleline">&gt;</code> <text>Greater than</text><br>
+	    <code class="singleline">&lt;=</code> <text>Less than or equal to</text><br>
+	    <code class="singleline">&gt;=</code> <text>Greater than or equal to</text><br><br>
+		<text>There are also modifiers. These are like operators but they work with 1 value. It is a singular symbol put behind a value, like this:</text><br><br>
+		<code>
+		  x = <syntax class="keyword">true</syntax><br>
+		  x = !x
+		</code>
+		<text>Here's a list of them:</text><br>
+		<code class="singleline">-</code> <text>Negates the value</text><br>
+		<code class="singleline">~</code> <text>Flips all the bits in a number</text><br>
+		<code class="singleline">@</code> <text>Reverses the bits in a number</text><br>
+		<code class="singleline">!</code> <text>Conditional inverse</text><br>
+	  </div>
+	  <div class="page" main="2" sub="4" style="display: none">
+	    <text>Here's how an if statement looks like:</text>
+		<code>
+		  <syntax class="keyword">if</syntax> condition {}
+		</code>
+		<text>It doesn't use any brackets, though you can use them if you want to. This code simply executes code in the curly braces if the condition is true</text>
+	  </div>
+	  <div class="page" main="2" sub="5" style="display: none">
+	    <text>This is the main feature of the language. Say you have a case like this:</text>
+		<code>
+		  <syntax class="keyword">if</syntax> condition1 {}<br>
+		  <syntax class="keyword">if</syntax> condition2 {}<br>
+		  <syntax class="keyword">if</syntax> condition3 {}<br>
+		  <syntax class="keyword">if</syntax> condition1 && condition2 && condition3 {}
+		</code>
+		<text>We can replace that with:</text>
+		<code>
+		  <syntax class="keyword">if</syntax> condition1 {}<br>
+		  <syntax class="keyword">and if</syntax> condition2 {}<br>
+		  <syntax class="keyword">and if</syntax> condition3 {}<br>
+		  <syntax class="keyword">run</syntax> {}
+		</code>
+		<text>That just looks way cleaner. You can also do this:</text>
+		<code>
+		  <syntax class="keyword">if</syntax> condition1 {}<br>
+		  <syntax class="keyword">and if</syntax> condition2 {}<br>
+		  <syntax class="keyword">or if</syntax> condition3 {}<br>
+		  <syntax class="keyword">run</syntax> {}
+		</code>
+		<text>Which is an equivalent to:</text>
+		<code>
+		  <syntax class="keyword">if</syntax> condition1 {}<br>
+		  <syntax class="keyword">if</syntax> condition2 {}<br>
+		  <syntax class="keyword">if</syntax> condition3 {}<br>
+		  <syntax class="keyword">if</syntax> condition1 && condition2 || condition3 {}
+		</code>
+	  </div>
+	  <div class="page" main="2" sub="6" style="display: none">
+	    <text>While loops are like if statements, but they execute code over and over again until the condition is not met.</text>
+		<code>
+		  <syntax class="keyword">while</syntax> condition {}
+		</code>
+		<text>You can use 2 keywords to manage the loop. continue and break. continue simply stops the current loop cycle and immediately turns to the next loop cycle. break simply breaks out of the loop completely. You can also break out of multiple loops like this:</text>
+		<code>
+		  <syntax class="keyword">while</syntax> condition1 {<br>
+		    <syntax class="keyword">while</syntax> condition2 {<br>
+	          <syntax class="keyword">break</syntax> <syntax class="number">2</syntax><br>
+		    }<br>
+		  }
+		</code>
+	  </div>
+	  <div class="page" main="2" sub="7" style="display: none">
+	    <text>Errors happen if you wrote bad code or when there's just something wrong. Here are all the types of them:</text><br><br>
+		<text>SyntaxError - Mostly thrown for writing bad code</text><br>
+		<text>DefineError - Happens when trying to access or modify undefined variable, calling undefined functions or creating duplicate functions</text><br>
+		<text>RangeError - Trying to access element of an array or string that is out of bounds</text><br>
+		<text>TypeError - Using incorrect type for an operation, or when a function argument requires specific type(s)</text><br>
+		<text>IOError - Mostly thrown for errors in IO operations</text><br>
+		<text>GraphicsError - Thrown when graphics API is not initialized yet</text><br>
+		<text>InternalError - These are errors that occured in the interpreter itself and not in the code.</text><br><br>
+		<text>The interpreter immediately exits out of the program to prevent any issues from happening. But how do we stop the interpreter from closing and want to handle the error for ourselves? We use try-catch statement.</text>
+		<code>
+		  <syntax class="keyword">try</syntax> {}<br>
+		  <syntax class="keyword">catch</syntax> errorName errorMessage lineNumber columnNumber {}<br>
+		</code>
+		<text>Whenever there's an error in the try block, it skips to the catch block and handles the error there. There are 4 variables that get created in the catch block that can be defined when defining the catch block.</text><br><br>
+		<text>errorName - Name of the error</text><br>
+		<text>errorMessage - The error message</text><br>
+		<text>lineNumber - Line number on where the error occured</text><br>
+		<text>columnNumber - Column number on where the error occured</text><br><br>
+		<text>If there's no error in the try block, the catch block is skipped and never executed.</text>
+	  </div>
+	  <div class="page" main="2" sub="8" style="display: none">
+	    <text>Functions are code blocks that are not initially executed, but can be executed instantly from somewhere else. All the code happens in there. You can define other functions or </text><text class="link" onclick="switchTo(2, 10, 'Libraries and imports')">import libraries</text></text> to the code. You can also pass arguments into these functions. You can define a function like this:</text>
+		<code>
+		  <syntax class="keyword">func</syntax> function() {}
+		</code>
+		<text>To define arguments, you can do this:</text>
+		<code>
+		  <syntax class="keyword">func</syntax> function(argument1, argument2) {}
+		</code>
+		<text>Now the function has to be called with 2 arguments or it will throw an error. You can also limit the type of the argument like this:</text>
+		<code>
+		  <syntax class="keyword">func</syntax> function(<syntax class="vartype">number</syntax> numberArgument, <syntax class="vartype">string array</syntax> stringArrayArgument) {}
+		</code>
+		<text>Argument 1 now has to be a number, and argument 2 has to be a string or an array</text><br>
+		<text>Every program has to have a main function which takes 1 array argument. This argument contains all the CLI arguments passed from the command line</text>
+		<code>
+		  <syntax class="keyword">func</syntax> main(args) {}
+		</code>
+		<text>To call a function, you do this:</text>
+		<code>
+		  function(argument1, argument2)
+		</code>
+	  </div>
+	  <div class="page" main="2" sub="9" style="display: none">
+	    <text>Comments are simple. They are the way to add text to your code without actually contributing to the code itself.</text>
+		<code style="color: #7F7F7F">
+		  // This is a single line comment!<br>
+		  /*<br>
+		  This is a multi<br>
+		  line comment!<br>
+		  */
+		</code>
+	  </div>
+	  <div class="page" main="2" sub="10" style="display: none">
+	    <text>You can import global variables and functions from a separate source file. These are called "libraries". This is how you import them into your source file.</text>
+		<code>
+		  <syntax class="keyword">import</syntax> <syntax class="string">"library.rioa"</syntax>
+		</code>
+		<text>These have to be specified at the very top of your source file.</text>
+	  </div>
+	  <div class="page" main="3" sub="0" style="display: none">
+	    <text>The interpreter provides 88 built-in functions that are automatically imported. These functions do all sorts of things like graphics, input, math and IO. Here's a list of them:</text><br><br>
+		<text>print(value) - This function simply prints the value to the console</text><br>
+		<text>println(value) - Exactly the same, but adds a new line after the message</text><br>
+		<text>input() - Asks the user for input and returns it</text><br>
+		<text>exit(number exitcode) - Exits the program with exit code</text>><br>
+		<text>wait(number duration) - Waits a specific amount of milliseconds</text><br>
+		<text>waitnano(number duration) - Waits some amount of nanoseconds, can be offsetted by a few hundred depending on processor speed</text><br>
+		<text>typeof(value) - Returns the type of value, as string</text><br>
+		<text>parsenum(string value) - Converts string to a number</text><br>
+		<text>includes(string string, string regex) - Checks if the string contains the regex</text><br>
+		<text>contains(array array, content) - Checks if the array contains the value</text><br>
+		<text>split(string string, string regex) - Splits the string into a string array based on regex</text><br>
+		<text>join(array stringarr, string delimiter) - Joins a string array by delimiter</text><br>
+		<text>replace(string string, string replacement) - Replaces regex by a replacement</text><br>
+		<text>sub(string array value, number beginindex, number endindex) - Returns substring/subarray based on begin index and end index</text><br>
+		<text>bytestostring(array bytearray) - Converts a byte array to string</text><br>
+		<text>stringtobytes(string string) - Converts a string to byte array</text><br>
+		<text>tocharcode(string character) - Takes a string with exactly 1 character and converts it to an ASCII value</text><br>
+		<text>fromcharcode(number charcode) - Converts ASCII char code to a character</text><br>
+		<text>lowercase(string string) - Converts every string's character into a lowercase version of itself</text><br>
+		<text>uppercase(string string) - Converts every string's character into an uppercase version of itself</text><br>
+		<text>gfxinit(string title, number width, number height) - Initializes graphics API and opens a window</text><br>
+		<text>gfxcolor(number r, number g, number b, number a) - Sets a color from the graphics API</text><br>
+		<text>gfxrectfill(number x, number y, number width, number height) - Draws a filled rectangle on the screen</text><br>
+		<text>gfxrectdraw(number x, number y, number width, number height) - Draws an outline of a rectangle on the screen</text><br>
+		<text>gfxcirclefill(number x, number y, number radius) - Draws a filled circle on the screen</text><br>
+		<text>gfxcircledraw(number x, number y, number radius) - Draws an outline of a circle on the screen</text><br>
+		<text>gfxfont(string fontname, number fontsize) - Sets a font for the graphics API</text><br>
+		<text>gfxstring(number x, number y, string text) - Draws text on the screen using the font used</text><br>
+		<text>gfximagedynamic(number x, number y, string array data) - Draws an image with dynamic width and height on the screen. The array can be used as an ARGB matrix of pixels. The first element is the image width.</text><br>
+		<text>gfximagefixed(number x, number y, number width, number height, string array data) - Draws an image with fixed width and height</text><br>
+		<text>gfxline(number x1, number y1, number x2, number y2) - Draws a line</text><br>
+		<text>keypressed(number keycode) - Checks if a key is pressed</text><br>
+		<text>mouseposx() - Returns X position of the mouse on the window</text><br>
+		<text>mouseposy() - Returns Y position of the mouse on the window</text><br>
+		<text>mouseleftpressed() - Checks if the left mouse button is pressed</text><br>
+		<text>mouserightpressed() - Checks if the right mouse button is pressed</text><br>
+		<text>mousemiddlepressed() - Checks if the middle mouse button is pressed</text><br>
+		<text>mousescrollamount() - Returns the amount scrolled on the scroll wheel since the last check</text><br>
+		<text>closegfx() - Closes the window</text><br>
+		<text>audio(string filename) - Plays an audio file</text><br>
+		<text>ioread(string filename) - Reads a file and returns the bytes contained in the file</text><br>
+		<text>iowrite(string filename, array data) - Writes bytes to a file</text><br>
+		<text>iofolder(string filename) - Creates a folder</text><br>
+		<text>iodelete(string filename) - Deletes a file or a folder</text><br>
+		<text>iolistdir(string filename) - Lists all files in a directory, throws an IO error if a file</text><br><br>
+		<text>Here are several math functions which are self-explanatory:</text>
+		<text>pi()</text><br>
+		<text>e() - Returns the value of Euler's number</text><br>
+		<text>abs(number x)</text><br>
+		<text>acos(number x)</text><br>
+		<text>asin(number x)</text><br>
+		<text>atan(number x)</text><br>
+		<text>atan2(number y, number x)</text><br>
+		<text>cb(number x)</text><br>
+		<text>cbrt(number x)</text><br>
+		<text>ceil(number x)</text><br>
+		<text>clamp(number a, number b, number c)</text><br>
+		<text>cos(number x)</text><br>
+		<text>cosh(number x)</text><br>
+		<text>deg(number x) - Converts radians to degrees</text><br>
+		<text>exp(number x)</text><br>
+		<text>floor(number x)</text><br>
+		<text>hypot(number x, number y)</text><br>
+		<text>lerp(number a, number b, number c)</text><br>
+		<text>log(number x)</text><br>
+		<text>log10(number x)</text><br>
+		<text>max(array array) - Returns the biggest number in this array</text><br>
+		<text>min(array array) - Returns the smallest number in this array</text><br>
+		<text>pow(number x, number y)</text><br>
+		<text>rad(number x) - Converts degrees to radians</text><br>
+		<text>random() - Returns a random number between 0 and 1</text><br>
+		<text>round(number x)</text><br>
+		<text>rt(number x, number n) - Returns nth root of x</text><br>
+		<text>scalb(number x, number y)</text><br>
+		<text>signum(number x)</text><br>
+		<text>sin(number x)</text><br>
+		<text>sinh(number x)</text><br>
+		<text>sq(number x)</text><br>
+		<text>tan(number x)</text><br>
+		<text>tanh(number x)</text><br>
+		<text>ulp(number x)</text><br><br>
+		<text>Here's the rest of the functions which just report errors</text><br><br>
+		<text>syntaxerr(msg)</text><br>
+		<text>deferr(msg)</text><br>
+		<text>rangeerr(msg)</text><br>
+		<text>typeerr(msg)</text><br>
+		<text>ioerr(msg)</text><br>
+		<text>gfxerr(msg)</text><br>
+		<text>internalerr(msg)</text><br>
+		<text>customerr(string name, msg)</text>
+	  </div>
+	  <div class="page" main="4" sub="0" style="display: none">
+	    <text>The interpreter is simple to use. Here's text that gets outputted by the interpreter when invalid CLI arguments are given:</text><br>
+	    <code>
+		  Usage:<br>
+		  java -jar RIOA.jar [options] sourcefile [args...]<br>
+		  <br>
+		  -output    : Outputs the returning value of main function<br>
+		  -highlight : Outputs syntax highlighted ANSI formatted text file with source code<br>
+		  -run       : Forcefully runs the code (used with -highlight to run both actions)<br>
+		</code>
+	  </div>
+	</div>
+    <div class="header">
+	  <text class="title" id="title">RIOA Documentation</text>
+	  <text class="link headerlink" onclick="window.location = 'https://www.github.com/Dominicentek/RIOA'">GitHub Repo</text>
+	</div>
+    <div class="navigation">
+      <text class="link main" onclick="switchTo(1, 0, 'Introduction')">(1) Introduction</text><br>
+      <text class="main">(2) Syntax</text><br>
+	  <text class="link sub" onclick="switchTo(2, 1, 'Variables')">(2.1) Variables</text><br>
+	  <text class="link sub" onclick="switchTo(2, 2, 'Arrays and strings')">(2.2) Arrays and strings</text><br>
+	  <text class="link sub" onclick="switchTo(2, 3, 'Operations and modifiers')">(2.3) Operations and modifiers</text><br>
+	  <text class="link sub" onclick="switchTo(2, 4, 'If statements')">(2.4) If statements</text><br>
+	  <text class="link sub" onclick="switchTo(2, 5, 'And, or, run')">(2.5) And, or, run</text><br>
+	  <text class="link sub" onclick="switchTo(2, 6, 'While loops')">(2.6) While loops</text><br>
+	  <text class="link sub" onclick="switchTo(2, 7, 'Try-catch and errors')">(2.7) Try-catch and errors</text><br>
+	  <text class="link sub" onclick="switchTo(2, 8, 'Functions')">(2.8) Functions</text><br>
+	  <text class="link sub" onclick="switchTo(2, 9, 'Comments')">(2.9) Comments</text><br>
+	  <text class="link sub" onclick="switchTo(2, 10, 'Libraries and imports')">(2.10) Libraries and imports</text><br>
+      <text class="link main" onclick="switchTo(3, 0, 'Built-in functions')">(3) Built-in functions</text><br>
+      <text class="link main" onclick="switchTo(4, 0, 'Interpreter')">(4) Interpreter</text><br>
+    </div>
+  </body>
+</html>
