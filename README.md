@@ -8,7 +8,7 @@ Documentation can be found here: https://dominicentek.github.io/RIOA
 ### Fibonacci number
 ```ansi
 func fibonacci(number n) {
-  if number < 2 {
+  if n < 2 {
     return n
   }
   else {
