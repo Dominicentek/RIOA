@@ -29,8 +29,8 @@ func main(args) {
   while tries > 0 {
     print("Your input: ")
     number = parsenum(input())
-    if randomNumber < number { println("Guessed number is higher") }
-    else if randomNumber > number { println("Guessed number is lower") }
+    if randomNumber < number { println("Target is lower") }
+    else if randomNumber > number { println("Target is higher") }
     else {
       println("You win!")
       exit(0)
