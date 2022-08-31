@@ -205,6 +205,37 @@ public class CodeBlock {
                     rioaExpression.addUnit(condition);
                     i = j;
                 }
+                else if (keyword.equals(RIOARuntime.KW_XOR)) {
+                    if (rioaExpression.isEmpty()) LangError.SYNTAX.report("xor without if", token.lineNumber, token.columnNumber);
+                    ArrayList<Token> expressionTokens = new ArrayList<>();
+                    i++;
+                    if (!tokens[i].is("if", TokenType.WORD)) LangError.SYNTAX.report("'if' expected", tokens[i].lineNumber, tokens[i].columnNumber);
+                    int j = i + 1;
+                    for (; j < tokens.length; j++) {
+                        if (tokens[j].is('{', TokenType.SYMBOL)) break;
+                        expressionTokens.add(tokens[j]);
+                    }
+                    ArrayList<Token> codeBlock = new ArrayList<>();
+                    int layer = 0;
+                    i++;
+                    j++;
+                    for (; j < tokens.length; j++) {
+                        if (tokens[j].is('{', TokenType.SYMBOL)) layer++;
+                        if (tokens[j].is('}', TokenType.SYMBOL)) layer--;
+                        if (layer == -1) break;
+                        codeBlock.add(tokens[j]);
+                    }
+                    CodeBlock block = new CodeBlock(codeBlock.toArray(new Token[0]));
+                    Variable condition = context.getValue(expressionTokens);
+                    if (condition.type != VariableType.BOOLEAN) LangError.TYPE.report("Condition is not a boolean", tokens[i].lineNumber, tokens[i].columnNumber);
+                    if ((boolean)condition.value) {
+                        CodeBlockResult result = block.run(context);
+                        if (!result.endMethod.equals(CodeBlockResult.END_METHOD_END_OF_CODE_BLOCK)) return result;
+                    }
+                    rioaExpression.addUnit(Operator.CONDITIONAL_XOR);
+                    rioaExpression.addUnit(condition);
+                    i = j;
+                }
                 else if (keyword.equals(RIOARuntime.KW_RUN)) {
                     if (rioaExpression.isEmpty()) LangError.SYNTAX.report("run without if", tokens[i].lineNumber, tokens[i].columnNumber);
                     ArrayList<Token> codeBlock = new ArrayList<>();
