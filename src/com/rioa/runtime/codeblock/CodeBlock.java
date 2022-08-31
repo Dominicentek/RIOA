@@ -27,6 +27,7 @@ public class CodeBlock {
         return result;
     }
     protected CodeBlockResult runInternal(RIOARuntime context) {
+        if (tokens.length == 0) return new CodeBlockResult(0, 0);
         try {
             Expression rioaExpression = new Expression();
             for (int i = 0; i < tokens.length; i++) {
