@@ -220,7 +220,7 @@
 		<text>That just looks way cleaner. You can also do this:</text>
 		<code>
 		  <syntax class="keyword">if</syntax> condition1 {}<br>
-		  <syntax class="keyword">and if</syntax> condition2 {}<br>
+		  <syntax class="keyword">xor if</syntax> condition2 {}<br>
 		  <syntax class="keyword">or if</syntax> condition3 {}<br>
 		  <syntax class="keyword">run</syntax> {}
 		</code>
@@ -229,7 +229,7 @@
 		  <syntax class="keyword">if</syntax> condition1 {}<br>
 		  <syntax class="keyword">if</syntax> condition2 {}<br>
 		  <syntax class="keyword">if</syntax> condition3 {}<br>
-		  <syntax class="keyword">if</syntax> condition1 && condition2 || condition3 {}
+		  <syntax class="keyword">if</syntax> condition1 ^^ condition2 || condition3 {}
 		</code>
 	  </div>
 	  <div class="page" main="2" sub="6" style="display: none">
@@ -409,6 +409,7 @@
 		  -output    : Outputs the returning value of main function<br>
 		  -highlight : Outputs syntax highlighted ANSI formatted text file with source code<br>
 		  -run       : Forcefully runs the code (used with -highlight to run both actions)<br>
+		  -debug     : Runs in debugging mode
 		</code>
 	  </div>
 	</div>
