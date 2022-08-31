@@ -1,5 +1,6 @@
 package com.rioa.runtime;
 
+import com.rioa.Debugger;
 import com.rioa.expression.*;
 import com.rioa.runtime.codeblock.CatchCodeBlock;
 import com.rioa.runtime.error.ErrorCallback;
@@ -14,6 +15,7 @@ import com.rioa.runtime.variable.VariableType;
 import com.rioa.token.Token;
 import com.rioa.token.TokenType;
 import com.rioa.token.Tokenizer;
+import jdk.jfr.internal.StringPool;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -36,6 +38,7 @@ public class RIOARuntime {
     public static final String KW_ELSE = "else";
     public static final String KW_AND = "and";
     public static final String KW_OR = "or";
+    public static final String KW_XOR = "xor";
     public static final String KW_RUN = "run";
     public static final String KW_RETURN = "return";
     public static final String KW_WHILE = "while";
@@ -329,6 +332,7 @@ public class RIOARuntime {
                     }
                 });
                 window.setIconImage(icon);
+                window.setResizable(false);
                 window.setVisible(true);
                 return new Variable();
             }
@@ -673,6 +677,22 @@ public class RIOARuntime {
                 return new Variable();
             }
         });
+        functions.put("iolistdir", new BuiltInFunction(new FunctionParameter("iodelete", new ArrayList<>(Arrays.asList(VariableType.STRING)))) {
+            public Variable run(RIOARuntime context) {
+                Variable param1 = context.getVariable("filename");
+                File file = new File((String)param1.value);
+                if (file.isDirectory()) {
+                    String[] filenames = file.list();
+                    Variable[] array = new Variable[filenames.length];
+                    for (int i = 0; i < array.length; i++) {
+                        array[i] = new Variable(filenames[i], VariableType.STRING);
+                    }
+                    return new Variable(new VariableArray(array), VariableType.ARRAY);
+                }
+                else report(context, LangError.IO, "Trying to list files inside of a file");
+                return new Variable();
+            }
+        });
         functions.put("pi", new BuiltInFunction() {
             public Variable run(RIOARuntime context) {
                 return new Variable(Math.PI, VariableType.NUMBER);
@@ -765,12 +785,6 @@ public class RIOARuntime {
             public Variable run(RIOARuntime context) {
                 Variable param1 = context.getVariable("x");
                 return new Variable(Math.exp((double)param1.value), VariableType.NUMBER);
-            }
-        });
-        functions.put("expm1", new BuiltInFunction(new FunctionParameter("x", new ArrayList<>(Arrays.asList(VariableType.NUMBER)))) {
-            public Variable run(RIOARuntime context) {
-                Variable param1 = context.getVariable("x");
-                return new Variable(Math.expm1((double)param1.value), VariableType.NUMBER);
             }
         });
         functions.put("floor", new BuiltInFunction(new FunctionParameter("x", new ArrayList<>(Arrays.asList(VariableType.NUMBER)))) {
@@ -891,7 +905,7 @@ public class RIOARuntime {
                 return new Variable(Math.sin((double)param1.value), VariableType.NUMBER);
             }
         });
-        functions.put("round", new BuiltInFunction(new FunctionParameter("x", new ArrayList<>(Arrays.asList(VariableType.NUMBER)))) {
+        functions.put("sinh", new BuiltInFunction(new FunctionParameter("x", new ArrayList<>(Arrays.asList(VariableType.NUMBER)))) {
             public Variable run(RIOARuntime context) {
                 Variable param1 = context.getVariable("x");
                 return new Variable(Math.sinh((double)param1.value), VariableType.NUMBER);
@@ -927,7 +941,7 @@ public class RIOARuntime {
                 return null;
             }
         });
-        functions.put("undeferr", new BuiltInFunction(new FunctionParameter("msg", new ArrayList<>())) {
+        functions.put("deferr", new BuiltInFunction(new FunctionParameter("msg", new ArrayList<>())) {
             public Variable run(RIOARuntime context) {
                 report(context, LangError.DEFINE, context.getVariable("msg").value.toString());
                 return null;
@@ -965,12 +979,14 @@ public class RIOARuntime {
         });
         functions.put("customerr", new BuiltInFunction(new FunctionParameter("name", new ArrayList<>(Arrays.asList(VariableType.STRING))), new FunctionParameter("msg", new ArrayList<>())) {
             public Variable run(RIOARuntime context) {
-                report(context, LangError.INTERNAL, context.getVariable("msg").value.toString());
+                Variable param1 = context.getVariable("name");
+                report(context, new LangError((String)param1.value), context.getVariable("msg").value.toString());
                 return null;
             }
         });
     }
     public void analyzeTokens() {
+        Debugger.start("Token analysis");
         Token token = null;
         try {
             boolean canImport = true;
@@ -1070,14 +1086,18 @@ public class RIOARuntime {
         catch (ArrayIndexOutOfBoundsException e) {
             LangError.SYNTAX.report(this, "Unexpected EOF", token.lineNumber, token.columnNumber);
         }
+        Debugger.end();
     }
     public Variable run(String[] args) {
         analyzeTokens();
+        Debugger.start("Running");
         Variable[] arguments = new Variable[args.length];
         for (int i = 0; i < args.length; i++) {
             arguments[i] = new Variable(args[i], VariableType.STRING);
         }
-        return runFunction("main", -1, new Variable(new VariableArray(arguments), VariableType.ARRAY));
+        Variable returningValue = runFunction("main", -1, new Variable(new VariableArray(arguments), VariableType.ARRAY));
+        Debugger.end();
+        return returningValue;
     }
     public void setVariable(String name, Variable value) {
         if (getVariable(name) == null) {
@@ -1389,6 +1409,7 @@ public class RIOARuntime {
         file.delete();
     }
     public Variable runFunction(String name, int callTokenIndex, Variable... parameters) {
+        //Debugger.start("Function " + name);
         Function function = functions.get(name);
         if (function == null) LangError.DEFINE.report(this, "Function '" + name + "' not defined");
         if (parameters.length != function.params.length) LangError.DEFINE.report(this, "Function '" + name + "' takes " + function.params.length + " arguments, found " + parameters.length);
@@ -1412,6 +1433,7 @@ public class RIOARuntime {
         callStack.push(call);
         Variable value = function.run(this);
         callStack.pop();
+        //Debugger.end();
         return value;
     }
     private String commas(ArrayList<VariableType<?>> types) {
