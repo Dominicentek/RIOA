@@ -10,6 +10,8 @@ Documentation can be found here: https://dominicentek.github.io/RIOA
 array = [1,2]
 ```
 will result in a crash with "SyntaxError: Invalid operator ," because the interpreter thinks the operator is "=\[". Similar thing happens with modifiers after operators too.
+
+***Features will be added after the jam judges finish judging this language.***
 ## Example programs
 ### Fibonacci number
 ```ansi
