@@ -3,7 +3,13 @@ RIOA is a functional interpreted programming language created for Truttle1's pra
 It's an acronym for (R)un (I)f (O)r (A)nd, which is the main feature of this language.
 
 Documentation can be found here: https://dominicentek.github.io/RIOA
-
+### Features and fixes to be added
+- Array initialization
+- Fix: Adding symbol at the very start of expression causes the symbol to be added as a part of operator
+```
+array = [1,2]
+```
+will result in a crash with "SyntaxError: Invalid operator ," because the interpreter thinks the operator is "=\[". Similar thing happens with modifiers after operators too.
 ## Example programs
 ### Fibonacci number
 ```ansi
