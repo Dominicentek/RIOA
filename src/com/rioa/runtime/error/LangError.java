@@ -2,18 +2,18 @@ package com.rioa.runtime.error;
 
 import com.rioa.runtime.RIOARuntime;
 
-public enum LangError {
-    SYNTAX,
-    DEFINE,
-    RANGE,
-    TYPE,
-    IO {
-        public String getName() {
-            return "IOError";
-        }
-    },
-    GRAPHICS,
-    INTERNAL;
+public class LangError {
+    public static final LangError SYNTAX = new LangError("SyntaxError");
+    public static final LangError DEFINE = new LangError("DefineError");
+    public static final LangError RANGE = new LangError("RangeError");
+    public static final LangError TYPE = new LangError("TypeError");
+    public static final LangError IO = new LangError("IOError");
+    public static final LangError GRAPHICS = new LangError("GraphicsError");
+    public static final LangError INTERNAL = new LangError("InternalError");
+    private final String name;
+    public LangError(String name) {
+        this.name = name;
+    }
     public void report(String msg) {
         System.out.println(getName() + ": " + msg);
         System.exit(msg.hashCode());
@@ -37,7 +37,6 @@ public enum LangError {
         context.errorCallbackStack.peek().callback(getName(), msg, lineNumber, columnNumber);
     }
     public String getName() {
-        String name = name().toLowerCase();
-        return Character.toUpperCase(name.charAt(0)) + name.substring(1) + "Error";
+        return name;
     }
 }

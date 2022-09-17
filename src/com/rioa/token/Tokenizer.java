@@ -1,5 +1,6 @@
 package com.rioa.token;
 
+import com.rioa.Debugger;
 import com.rioa.runtime.error.LangError;
 import com.rioa.runtime.RIOARuntime;
 import com.rioa.runtime.variable.VariableType;
@@ -12,6 +13,8 @@ public class Tokenizer {
         return tokenize(code, true);
     }
     public static Token[] tokenize(String code, boolean ignoreComments) {
+        Debugger.start("Tokenizing");
+        long time = System.currentTimeMillis();
         ArrayList<Token> tokens = new ArrayList<>();
         int lineNumber = 1;
         int columnNumber = 0;
@@ -150,6 +153,7 @@ public class Tokenizer {
         for (int i = 0; i < array.length; i++) {
             array[i] = tokens.get(i);
         }
+        Debugger.end();
         return array;
     }
     private static boolean isValidSymbol(char character) {
@@ -239,6 +243,8 @@ public class Tokenizer {
     public static String ansiSyntaxHighlight(String code) {
         StringBuilder ansi = new StringBuilder();
         Token[] tokens = tokenize(code, false);
+        Debugger.start("Highlighting");
+        long time = System.currentTimeMillis();
         int l = 1;
         int c = 0;
         for (Token token : tokens) {
@@ -279,6 +285,7 @@ public class Tokenizer {
                 ansi.append(resetAnsi());
             }
         }
+        Debugger.end();
         return ansi.toString();
     }
     private static final int ANSI_COLOR_RED = 1;
@@ -306,6 +313,7 @@ public class Tokenizer {
                keyword.equals(RIOARuntime.KW_OR) ||
                keyword.equals(RIOARuntime.KW_RUN) ||
                keyword.equals(RIOARuntime.KW_TRY) ||
+               keyword.equals(RIOARuntime.KW_XOR) ||
                keyword.equals(RIOARuntime.KW_TRUE) ||
                keyword.equals(RIOARuntime.KW_FALSE);
     }
